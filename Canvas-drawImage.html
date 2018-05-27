@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>drawImage</title> 
+<script defer>
+    window.onload = function() {
+        var oCanvas = document.getElementById('canvas');
+        var oUpload = document.getElementById('upload');
+        var oDemo = document.getElementById('demo');
+        var ctx = '';
+        oUpload.onchange = function() {
+            var file = oUpload.files[0];
+            var img = new Image();
+            var imgSrc = window.URL.createObjectURL(file);
+                img.src = imgSrc;
+                img.setAttribute('width', '500px');
+                img.setAttribute('height', '300px');
+                oDemo.appendChild(img);
+
+            img.onload = function() {
+                console.log('picture upload successfully');
+                // 释放url
+                window.URL.revokeObjectURL(imgSrc);
+                if(oCanvas.getContext) {
+                    console.log('浏览器支持的方法');
+                    ctx = oCanvas.getContext('2d');
+                    // var test = document.getElementById('test');
+                    // 如果要渲染上传的图片，且逻辑不在图片加载完成事件中，就必须要给个定时器，否则无法获取到完整数据
+                    // setTimeout(function() {
+                        console.log(img);
+                        ctx.drawImage(img, 10, 10);
+                    // }, 5);
+                }
+            }
+        };
+    }
+</script>
+</head>
+<body>
+    <input id="upload" type="file">
+    <div id="demo"></div>
+    <canvas id="canvas" style="border: 1px solid #ccc"></canvas>
+</body>
+</html>
